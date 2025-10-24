@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Do You Love Me?</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 20px;
+    background-color: #fef5fb;
+  }
+
+  h1 {
+    font-size: 48px;
+    color: #FF80D2;
+    margin-bottom: 30px;
+  }
+
+  button {
+    padding: 12px 25px;
+    font-size: 18px;
+    margin: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+  }
+
+  #btnYes {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  #btnNo {
+    background-color: #FF4081;
+    color: white;
+  }
+  
+    #btnWatch {
+    background-color: #7A7AFF;
+    color: white;
+  }
+
+
+  #image {
+    margin-top: 10px;
+    width: 200px;
+    border-radius: 10px;
+  }
+   #myVideo {
+    margin-top: 10px;
+    width: 400px;
+    border-radius: 10px;
+  }
+
+  .d-none {
+    display: none;
+  }
+</style>
+</head>
+<body>
+  <div>
+    <h1 id="message">Do you love me ?</h1>
+    <img id="image"  src="https://media.tenor.com/83VSASMnBJQAAAAj/bubu-dudu-sseeyall.gif" alt="dudu gif">
+  </div>
+
+
+<!-- Buttons -->
+<button id="btnYes">Yes</button>
+<button id="btnNo">No</button>
+<button id="btnWatch" class="d-none">Video for you 💋</button>
+<!-- GIF Image -->
+
+
+<!-- Video -->
+<video id="myVideo" class="d-none"  playsinline>
+  <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+</video>
+
+<script>
+$(document).ready(function() {
+  let count = 0;
+
+  // Click No button
+  $("#btnNo").click(function() {
+    $("#image").removeClass("d-none");
+
+    if(count === 0){
+      $("#image").attr("src", "https://media.tenor.com/5IRHkK2k-E8AAAAi/dudu.gif");
+    } else if(count === 1){
+      $("#image").attr("src", "https://media.tenor.com/TwgOtLeidQsAAAAi/dudu-cheeky-dudu-walking.gif");
+    } else if(count === 2){
+      $("#image").attr("src", "https://media.tenor.com/Q9VuGIKQqEMAAAAi/love-bear.gif");
+    } else if(count === 3){
+      $("#image").attr("src", "https://media.tenor.com/0XxZLMzjYV0AAAAi/dudu-crying-texting.gif");
+    } else if(count >= 4){
+      $("#image").attr("src", "https://media.tenor.com/TBqHlfNB19gAAAAi/dudu-mad-dudu-angry.gif");
+      $(this).hide(); // hide No button
+      $("#btnYes").css({"width":"100%","height":"100px"});
+    }
+
+    count++;
+  });
+
+  // Click Yes button
+  $("#btnYes").click(function() {
+    $(this).hide();
+    $("#btnNo").hide();
+      setTimeout(() => {   $("#btnWatch").removeClass("d-none")}, 2000);
+ 
+    $("#message").html("I Love You ❤");
+    $("#image").attr("src", "https://media.tenor.com/LJcUNGpO9s0AAAAj/dudu-flowers-rose-dudu.gif");
+  });
+  
+  
+  $("#btnWatch").click(function(){
+    $("#myVideo").removeClass("d-none");
+    $("#message").addClass("d-none");
+    $(this).hide();
+     $("#image").attr("src", "https://media.tenor.com/l2YDCpF8cGAAAAAi/dudu-bubu-dudu-bubu-popcorn.gif");
+    const video = $("#myVideo").get(0);
+    setTimeout(() => { video.play(); }, 2000);
+
+    // When video ends
+    video.addEventListener("ended", function() {
+       $("#message").removeClass("d-none")
+       $("#image").attr("src", "https://media.tenor.com/gUiu1zyxfzYAAAAi/bear-kiss-bear-kisses.gif");
+      $("#message").html("พี่รักนู๋นะครับ ❤");
+      $("#myVideo").addClass("d-none");
+    });
+  })
+});
+</script>
+
+</body>
+</html>
