@@ -36,7 +36,7 @@
     background-color: #FF4081;
     color: white;
   }
-  
+
   #btnWatch {
     background-color: #7A7AFF;
     color: white;
@@ -71,25 +71,52 @@
   <button id="btnNo">No</button>
   <button id="btnWatch" class="d-none">Video for you 💋</button>
 
-  <!-- YouTube video (use iframe, not video tag) -->
-  <iframe
-    id="myVideo"
-    class="d-none"
-    src=""
-    title="YouTube video player"
-    frameborder="0"
-    allow="autoplay; encrypted-media"
-    allowfullscreen>
-  </iframe>
+  <!-- YouTube iframe -->
+  <div id="videoContainer" class="d-none">
+    <div id="myVideo"></div>
+  </div>
 
 <script>
+let player; // YouTube player instance
+
+// โหลด YouTube API
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+// ฟังก์ชันนี้จะถูกเรียกโดย YouTube API หลังโหลดเสร็จ
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('myVideo', {
+    height: '450',
+    width: '800',
+    videoId: 'M1bi6upipaw', // ใส่ YouTube ID ที่ต้องการ
+    playerVars: {
+      autoplay: 0, // เราจะสั่งเล่นเองตอนคลิก
+      controls: 1
+    },
+    events: {
+      'onStateChange': onPlayerStateChange
+    }
+  });
+}
+
+// ตรวจจับสถานะของวิดีโอ
+function onPlayerStateChange(event) {
+  if (event.data === YT.PlayerState.ENDED) {
+    // วิดีโอเล่นจบ
+    $("#videoContainer").addClass("d-none");
+    $("#message").removeClass("d-none").html("พี่รักนู๋นะครับ ❤");
+    $("#image").attr("src", "https://media.tenor.com/gUiu1zyxfzYAAAAi/bear-kiss-bear-kisses.gif");
+  }
+}
+
 $(document).ready(function() {
   let count = 0;
 
-  // Click No button
+  // ปุ่ม No
   $("#btnNo").click(function() {
     $("#image").removeClass("d-none");
-
     if(count === 0){
       $("#image").attr("src", "https://media.tenor.com/5IRHkK2k-E8AAAAi/dudu.gif");
     } else if(count === 1){
@@ -103,31 +130,30 @@ $(document).ready(function() {
       $(this).hide();
       $("#btnYes").css({"width":"90%","height":"100%"});
     }
-
     count++;
   });
 
-  // Click Yes button
+  // ปุ่ม Yes
   $("#btnYes").click(function() {
     $(this).hide();
     $("#btnNo").hide();
-    setTimeout(() => { $("#btnWatch").removeClass("d-none") }, 2000);
+    setTimeout(() => { $("#btnWatch").removeClass("d-none"); }, 2000);
 
     $("#message").html("I Love You ❤");
     $("#image").attr("src", "https://media.tenor.com/LJcUNGpO9s0AAAAj/dudu-flowers-rose-dudu.gif");
   });
 
-  // Click Watch button
+  // ปุ่ม Watch (เปิดวิดีโอ YouTube)
   $("#btnWatch").click(function(){
     $("#message").addClass("d-none");
     $(this).hide();
     $("#image").attr("src", "https://media.tenor.com/l2YDCpF8cGAAAAAi/dudu-bubu-dudu-bubu-popcorn.gif");
 
-    // เปลี่ยนเป็นลิงก์ embed ของ YouTube พร้อม autoplay
-    const youtubeID = "M1bi6upipaw";
-    const embedURL = `https://www.youtube.com/embed/${youtubeID}?autoplay=1&controls=1`;
-
-    $("#myVideo").attr("src", embedURL).removeClass("d-none");
+    // แสดงวิดีโอ
+    setTimeout(() => {
+      $("#videoContainer").removeClass("d-none");
+      player.playVideo(); // สั่งให้เล่นจริง ๆ ผ่าน API
+    }, 2000);
   });
 });
 </script>
