@@ -37,20 +37,21 @@
     color: white;
   }
   
-    #btnWatch {
+  #btnWatch {
     background-color: #7A7AFF;
     color: white;
   }
-
 
   #image {
     margin-top: 50px;
     width: 500px;
     border-radius: 10px;
   }
-   #myVideo {
+
+  #myVideo {
     margin-top: 50px;
     width: 800px;
+    height: 450px;
     border-radius: 10px;
   }
 
@@ -62,21 +63,24 @@
 <body>
   <div>
     <h1 id="message">Do you love me ?</h1>
-    <img id="image"  src="https://media.tenor.com/83VSASMnBJQAAAAj/bubu-dudu-sseeyall.gif" alt="dudu gif">
+    <img id="image" src="https://media.tenor.com/83VSASMnBJQAAAAj/bubu-dudu-sseeyall.gif" alt="dudu gif">
   </div>
 
+  <!-- Buttons -->
+  <button id="btnYes">Yes</button>
+  <button id="btnNo">No</button>
+  <button id="btnWatch" class="d-none">Video for you 💋</button>
 
-<!-- Buttons -->
-<button id="btnYes">Yes</button>
-<button id="btnNo">No</button>
-<button id="btnWatch" class="d-none">Video for you 💋</button>
-<!-- GIF Image -->
-
-
-<!-- Video -->
-<video id="myVideo" class="d-none"  playsinline>
-  <source src="https://youtu.be/M1bi6upipaw" type="video/mp4">
-</video>
+  <!-- YouTube video (use iframe, not video tag) -->
+  <iframe
+    id="myVideo"
+    class="d-none"
+    src=""
+    title="YouTube video player"
+    frameborder="0"
+    allow="autoplay; encrypted-media"
+    allowfullscreen>
+  </iframe>
 
 <script>
 $(document).ready(function() {
@@ -96,7 +100,7 @@ $(document).ready(function() {
       $("#image").attr("src", "https://media.tenor.com/0XxZLMzjYV0AAAAi/dudu-crying-texting.gif");
     } else if(count >= 4){
       $("#image").attr("src", "https://media.tenor.com/TBqHlfNB19gAAAAi/dudu-mad-dudu-angry.gif");
-      $(this).hide(); // hide No button
+      $(this).hide();
       $("#btnYes").css({"width":"90%","height":"100%"});
     }
 
@@ -107,29 +111,24 @@ $(document).ready(function() {
   $("#btnYes").click(function() {
     $(this).hide();
     $("#btnNo").hide();
-      setTimeout(() => {   $("#btnWatch").removeClass("d-none")}, 2000);
- 
+    setTimeout(() => { $("#btnWatch").removeClass("d-none") }, 2000);
+
     $("#message").html("I Love You ❤");
     $("#image").attr("src", "https://media.tenor.com/LJcUNGpO9s0AAAAj/dudu-flowers-rose-dudu.gif");
   });
-  
-  
+
+  // Click Watch button
   $("#btnWatch").click(function(){
-    $("#myVideo").removeClass("d-none");
     $("#message").addClass("d-none");
     $(this).hide();
-     $("#image").attr("src", "https://media.tenor.com/l2YDCpF8cGAAAAAi/dudu-bubu-dudu-bubu-popcorn.gif");
-    const video = $("#myVideo").get(0);
-    setTimeout(() => { video.play(); }, 2000);
+    $("#image").attr("src", "https://media.tenor.com/l2YDCpF8cGAAAAAi/dudu-bubu-dudu-bubu-popcorn.gif");
 
-    // When video ends
-    video.addEventListener("ended", function() {
-       $("#message").removeClass("d-none")
-       $("#image").attr("src", "https://media.tenor.com/gUiu1zyxfzYAAAAi/bear-kiss-bear-kisses.gif");
-      $("#message").html("พี่รักนู๋นะครับ ❤");
-      $("#myVideo").addClass("d-none");
-    });
-  })
+    // เปลี่ยนเป็นลิงก์ embed ของ YouTube พร้อม autoplay
+    const youtubeID = "M1bi6upipaw";
+    const embedURL = `https://www.youtube.com/embed/${youtubeID}?autoplay=1&controls=1`;
+
+    $("#myVideo").attr("src", embedURL).removeClass("d-none");
+  });
 });
 </script>
 
